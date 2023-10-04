@@ -9,6 +9,10 @@ def is_number(token):
     """Check if the token is a number"""
     return re.match(r'\d+', token) is not None
 
+def is_show(token):
+    """Check if the token is a show command"""
+    return token == 'show'
+
 def parse_tokens(tokens, variables):
     """parse the tokens, doing the actions described where [var] indicates a variable, # indicates addition and ~ indicates subtraction"""
 
@@ -23,9 +27,10 @@ def parse_tokens(tokens, variables):
             return variables[variable_name]
         elif tokens[1] == 'is':
             variables[variable_name] = parse_tokens(tokens[2:], variables)
-            print(f"Updated variable {variable_name} with value {variables[variable_name]}")
         else:
             raise ValueError('Incorrect input - expected "is"')
+    elif is_show(focus):
+        print(parse_tokens(tokens[1:], variables))
     elif is_number(focus):
         return int(focus)
     else:

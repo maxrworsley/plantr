@@ -14,6 +14,11 @@ class TestParser(unittest.TestCase):
         parse_tokens(['[pot1]', 'is', '4'], vars)
         parse_tokens(['[pot2]', 'is', '[pot1]'], vars)
         self.assertEqual(vars['pot2'], 4)
+
+    def test_show(self):
+        vars = dict()
+        parse_tokens(['[pot]', 'is', '4'], vars)
+        parse_tokens(['show', '[pot]'], vars)
     
     def test_error(self):
         vars = dict()
