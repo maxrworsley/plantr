@@ -8,13 +8,21 @@ class TokenList:
 
     def peek(self):
         return self.tokens[self.index]
-
+    
     def consume(self):
+        token = self.tokens[self.index]
         self.index += 1
-        return self.tokens[self.index - 1]
+        return token
+    
+    def is_empty(self):
+        return len(self) == 0
     
     def __len__(self):
         return len(self.tokens) - self.index
+    
+    def __str__(self):
+        return str(self.tokens[self.index:])
+    
 
 def raise_parse_error(variables, remaining, error_message):
     """Raise a parse error and print out the variables and remaining tokens"""
@@ -31,29 +39,41 @@ is_show = lambda x: x == 'show'
 is_is = lambda x: x == 'is'
 is_add = lambda x: x == '#'
 is_subtract = lambda x: x == '~'
+is_comment = lambda x: x == '//'
 
 def parse_tokens(tokens: TokenList, variables):
     """parse the tokens, doing the actions described where [var] indicates a variable, # indicates addition and ~ indicates subtraction"""
 
-    if len(tokens) == 0:
+    if tokens.is_empty():
         raise_parse_error(variables, tokens, 'expected variable or number')
 
     focus = tokens.consume()
 
+    if is_comment(focus):
+        return
+
     if is_variable(focus):
         variable_name = focus[1:-1]
-        if len(tokens) == 1:
+        if tokens.is_empty() or is_comment(tokens.peek()):
             return variables[variable_name]
-        elif is_is(tokens.peek()):
-            tokens.consume()
+        
+        next_token = tokens.consume()
+
+        if is_is(next_token):
             variables[variable_name] = parse_tokens(tokens, variables)
+        elif is_add(next_token):
+            return variables[variable_name] + parse_tokens(tokens, variables)
+        elif is_subtract(next_token):
+            return variables[variable_name] - parse_tokens(tokens, variables)
         else:
-            raise raise_parse_error(variables, tokens, 'expected "is"')
+            raise raise_parse_error(variables, tokens, 'expected is, # or ~')
     elif is_show(focus):
         print(parse_tokens(tokens, variables))
+
     elif is_number(focus):
-        if len(tokens) == 1:
+        if len(tokens) == 0:
             return int(focus)
+        
         next_token = tokens.consume()
         if is_add(next_token):
             return int(focus) + parse_tokens(tokens, variables)
@@ -61,6 +81,7 @@ def parse_tokens(tokens: TokenList, variables):
             return int(focus) - parse_tokens(tokens, variables)
         else:
             raise raise_parse_error(variables, tokens, 'expected # or ~')
+        
     else:
         raise raise_parse_error(variables, tokens, 'expected variable or number')
         
@@ -68,9 +89,10 @@ def parse_tokens(tokens: TokenList, variables):
 def parse_lines(lines):
     variables = {}
     for line in lines:
-        token_list = TokenList(line.split(' '))
-        
-        parse_tokens(token_list, variables)
+        tokens = list(filter(lambda x: x != '', line.strip().split(' ')))
+        if tokens:
+            token_list = TokenList(tokens)
+            parse_tokens(token_list, variables)
 
 
 def get_lines(file_name):
@@ -79,7 +101,8 @@ def get_lines(file_name):
             return file.readlines()
 
 if __name__ == "__main__":
-    file_name = sys.argv[1]
+    # file_name = sys.argv[1]
+    file_name = "E:\\src\\plantr\\tests\\final.pots"
 
     lines = get_lines(file_name)
     parse_lines(lines)

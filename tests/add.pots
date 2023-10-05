@@ -1,0 +1,4 @@
+[potA] is 2
+[potB] is 3
+
+[potC] is [potA] # [potB]
