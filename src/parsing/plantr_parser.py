@@ -101,8 +101,7 @@ def get_lines(file_name):
             return file.readlines()
 
 if __name__ == "__main__":
-    # file_name = sys.argv[1]
-    file_name = "E:\\src\\plantr\\tests\\final.pots"
+    file_name = sys.argv[1]
 
     lines = get_lines(file_name)
     parse_lines(lines)
