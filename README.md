@@ -1,6 +1,6 @@
 # Plantr
 
-Plantr is an interpreted language, made with the goal of testing out GitHub Copilot alongside a normal development workflow.
+Plantr is a interpreted language, made with the goal of testing out GitHub Copilot alongside a normal development workflow.
 
 ## Table of Contents
 
@@ -8,7 +8,7 @@ Plantr is an interpreted language, made with the goal of testing out GitHub Copi
 - [Usage](#Usage)
 
 ## Syntax
-The syntax for Plantr consists of 4 components:
+The syntax for Plantr conists of:
 - ```[var]``` to indicate a variable called *var*
 - ```[var] is <x>``` to set a variable equal to x
 - ```<a> # <b>``` to indicate the values of a and b added together. They can be either numbers or variables
@@ -37,9 +37,21 @@ The fourth line assigns the value of potC - potA to the variable potD.
 
 Finally, the example outputs the value of potD using the show keyword. The expected output of the example is 3, which is the value of potD after the operations have been performed. This will be sent to stdout.
 
+As standard python:
+```python
+potA = 2
+potB = 3
+
+potC = potA + potB
+
+potD = potC - potA
+
+print(potD) # Prints out 3
+```
+
 ## Usage
 
-To use the parser, you can use the function as an import or run it directly on a file.
+To use the parser, you can use the functions or run it directly on a file.
 
 ### As an import
 ```python
