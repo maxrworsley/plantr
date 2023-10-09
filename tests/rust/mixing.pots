@@ -1,0 +1,5 @@
+grow plant1 for 3;
+grow plant2 for 4;
+wait for 2;
+
+grow plant3 mixing plant1 and plant2;

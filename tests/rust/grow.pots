@@ -1,0 +1,3 @@
+grow plant2 for 4;
+wait for 2;
+show plant1;

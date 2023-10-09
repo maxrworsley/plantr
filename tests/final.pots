@@ -1,8 +1,0 @@
-[potA] is 2
-[potB] is 3
-
-[potC] is [potA] # [potB]
-
-[potD] is [potC] ~ [potA]
-
-show [potD] // Should be 3
