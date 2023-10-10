@@ -14,6 +14,11 @@ pub fn parse_grow(input: &mut std::str::Split<'_, char>, variables: &mut Variabl
                 
                 let plant = Plant {value: 0, cap: amount};
                 variables.insert(name.to_string(), plant);
+                
+                if let Some(_) = input.next() {
+                    panic!("Invalid grow statement: {:?}", input)
+                }
+
                 return;
             }},
             Some("mixing") => {
@@ -28,6 +33,11 @@ pub fn parse_grow(input: &mut std::str::Split<'_, char>, variables: &mut Variabl
                     let cap_value = std::cmp::max(plant1.cap, plant2.cap);
                     let plant = Plant {value: average, cap: cap_value};
                     variables.insert(name.to_string(), plant);
+
+                    if let Some(_) = input.next() {
+                        panic!("Invalid grow statement: {:?}", input)
+                    }
+
                     return;
                 } else {    
                     panic!("Invalid grow statement, missing 'and' keyword: {:?}", input)
@@ -45,9 +55,8 @@ mod tests {
     use crate::vars::init_variables;
     use super::*;
 
-    // Test that ensures the grow function works as expected
     #[test]
-    fn test_grow_initial() {
+    fn test_grow_initial_with_val() {
         let mut input_iter = "plant1 for 5".split(' ');
         let mut variables = init_variables();
         
@@ -56,11 +65,19 @@ mod tests {
         assert!(variables.get("plant1").unwrap().value == 0);
     }
 
-    // Test that ensures a panic is thrown by the grow function
     #[test]
     #[should_panic]
-    fn test_grow_invalid() {
+    fn test_grow_panic_too_little_input() {
         let mut input_iter = "plant1 for".split(' ');
+        let mut variables = init_variables();
+
+        parse_grow(&mut input_iter, &mut variables);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_grow_panic_too_much_input() {
+        let mut input_iter = "plant1 for 5 6".split(' ');
         let mut variables = init_variables();
 
         parse_grow(&mut input_iter, &mut variables);

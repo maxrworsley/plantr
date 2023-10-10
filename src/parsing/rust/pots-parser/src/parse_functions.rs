@@ -1,4 +1,5 @@
 use crate::parse_grow::parse_grow;
+use crate::parse_show::parse_show;
 use crate::vars::Variables;    
 
 
@@ -44,20 +45,12 @@ pub fn parse_wait(input: &mut std::str::Split<'_, char>, variables: &mut Variabl
     }
 }
 
-pub fn parse_show(input: &mut std::str::Split<'_, char>, variables: &mut Variables) {
-    if let Some(plant_name) = input.next() {
-        let plant = variables.get(plant_name).unwrap();
-        println!("{}: {}", plant_name, plant.value);
-    }
-}
-
 pub fn tick_variables(variables: &mut Variables, number_of_ticks: usize) {
     for (_, plant) in variables.iter_mut() {
         plant.value = std::cmp::min(plant.cap as i32, plant.value + number_of_ticks as i32)
     }
 }
 
-// Write test boilderplate
 #[cfg(test)]
 mod tests {
     use crate::vars::init_variables;
