@@ -1,6 +1,8 @@
 use crate::vars::Variables;
 
+/// Parses a show statement of the form "show <variable name>"
 pub fn parse_show(input: &mut std::str::Split<'_, char>, variables: &mut Variables) {
+    
     if let Some(plant_name) = input.next() {
         let plant = variables.get(plant_name).unwrap();
         println!("{}: {}", plant_name, plant.value);

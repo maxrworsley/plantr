@@ -1,5 +1,6 @@
 use crate::vars::Variables;
 
+/// Parses a wait statement of the form "wait for <number of ticks>"
 pub fn parse_wait(input: &mut std::str::Split<'_, char>, variables: &mut Variables) {
     if let Some("for") = input.next() {
         if let Some(time) = input.next() {
@@ -12,6 +13,7 @@ pub fn parse_wait(input: &mut std::str::Split<'_, char>, variables: &mut Variabl
     
 }
 
+/// Increments all the variables by the given number of ticks until they hit their cap
 pub fn tick_variables(variables: &mut Variables, number_of_ticks: usize) {
     for (_, plant) in variables.iter_mut() {
         plant.value = std::cmp::min(plant.cap as i32, plant.value + number_of_ticks as i32)
